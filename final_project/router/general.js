@@ -29,29 +29,22 @@ public_users.get('/isbn/:isbn',function (req, res) {
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
   //Write your code here
+  based_author = req.params.author;
+  booksarray = books;
+  new_array = {};
+  console.log(typeof(new_array));
+  
+  for(var key in booksarray) {
+      if(booksarray.hasOwnProperty(key)) {
+          var value = booksarray[key];
+          if  (value["author"] == based_author) {
+              new_array[key] = value;
+              console.log("Type of new_array: " + typeof(new_array));
+          }
 
-  const author = req.query.author; 
-  bookarray = books[isbn];
-  console.log(typeof(bookarray));
-  filtered_books = wrwasd
-
-  for (i = 1; i <= bookarray.length; i++) {
-      if(bookarray[i]["author"] === author) {
-          filtered_books.push(bookarray[i]);
-          console.log(filtered_books)
       }
   }
-  if(filtered_books) {
-      if(filtered_books.length > 0) {
-          res.send(filtered_books)
-      }
-      else {
-          res.send({message: "There is no book with that author"})
-      }
-  }
-  else {
-      res.send({message: "filtered_books was never created"})
-  }
+  res.send(new_array);
       
   });
   
