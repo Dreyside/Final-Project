@@ -7,7 +7,18 @@ const public_users = express.Router();
 
 public_users.post("/register", (req,res) => {
   //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  const username = req.body.username;
+  const password = req.body.password;
+  
+  if (username && password) {
+    if (!isValid(username)) {
+      users.push({"username":username, "password":password});
+      return res.status(200).json({message: "User successfully registred. Now you can login"});
+    } else {
+      return res.status(404).json({message: "User already exists!"});
+    }
+  }
+  return res.status(404).json({message: "Unable to register user."});
 });
 
 // Get the book list available in the shop
@@ -32,14 +43,12 @@ public_users.get('/author/:author',function (req, res) {
   based_author = req.params.author;
   booksarray = books;
   new_array = {};
-  console.log(typeof(new_array));
   
   for(var key in booksarray) {
       if(booksarray.hasOwnProperty(key)) {
           var value = booksarray[key];
           if  (value["author"] == based_author) {
               new_array[key] = value;
-              console.log("Type of new_array: " + typeof(new_array));
           }
 
       }
@@ -52,13 +61,42 @@ public_users.get('/author/:author',function (req, res) {
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
   //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  based_title = req.params.title;
+  booksarray = books;
+  new_array = {};
+  
+  for(var key in booksarray) {
+      if(booksarray.hasOwnProperty(key)) {
+          var value = booksarray[key];
+          if  (value["title"] == based_title) {
+              new_array[key] = value;
+          }
+
+      }
+  }
+  res.send(new_array);
 });
 
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
   //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  based_isbn = req.params.isbn;
+  booksarray = books;
+  new_array = {};
+  another_array = {};
+  
+  for(var key in booksarray) {
+      if(booksarray.hasOwnProperty(key)) {
+          var value = booksarray[key];
+          if  (key == based_isbn) {
+              new_array[key] = value;
+          }
+          another_array[key] = new_array["review"];
+
+      }
+  }
+  res.send(another_array);
+
 });
 
 module.exports.general = public_users;
