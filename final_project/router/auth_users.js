@@ -38,7 +38,7 @@ const authenticatedUser = (username,password)=>{ //returns boolean
 //only registered users can login
 regd_users.post("/login", (req,res) => {
     //Write your code here
-    const username = req.body.username;
+const username = req.body.username;
   const password = req.body.password;
   if (!username || !password) {
       return res.status(404).json({message: "Error logging in"});
@@ -61,24 +61,6 @@ regd_users.post("/login", (req,res) => {
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
     //Write your code here
-    const email = req.params.email;
-    let friend = friends[email]
-    if (friend) { //Check is friend exists
-        let DOB = req.body.DOB;
-        //Add similarly for firstName
-        //Add similarly for lastName
-        //if DOB the DOB has been changed, update the DOB 
-        if(DOB) {
-            friend["DOB"] = DOB
-        }
-        //Add similarly for firstName
-        //Add similarly for lastName
-        friends[email]=friend;
-        res.send(`Friend with the email  ${email} updated.`);
-    }
-    else{
-        res.send("Unable to find friend!");
-    }
 });
 
 module.exports.authenticated = regd_users;
