@@ -7,32 +7,28 @@ let users = [];
 
 const isValid = (username)=>{ //returns boolean
     //write code to check is the username is valid
-    let userswithsamename = "";
-    for (user in users ) {
-        if(user.username === username)
-        userswithsamename = username;
-    }
-      if(userswithsamename.length > 0){
-        return true;
-      } else {
-        return false;
-      }
 
+    let userswithsamename = users.filter((user)=>{
+        return user.username === username
+    });
+    if(userswithsamename.length > 0){
+        return true;
+    } else {
+        return false;
+    }
 }
 
 const authenticatedUser = (username,password)=>{ //returns boolean
     //write code to check if username and password match the one we have in records.
-    let validusers = "";
-    for (var user in users) {
-        if(user.username === username && user.password === password) {
-            validusers = username;
-        }
-    }
-      if(validusers.length > 0){
+
+    let validusers = users.filter((user)=>{
+        return (user.username === username && user.password === password)
+    });
+    if(validusers.length > 0){
         return true;
-      } else {
+    } else {
         return false;
-      }
+    }
 }
 
 //only registered users can login
@@ -50,17 +46,39 @@ const username = req.body.username;
     req.session.authorization = {
       accessToken,username
   }
+  console.log("Access Token: " + accessToken + " Username: " + username);
+  console.log("req.session.authorization: " + req.session.authorization);
   return res.status(200).send("User successfully logged in");
   } else {
     return res.status(208).json({message: "Invalid Login. Check username and password"});
   }
     
-  return res.status(300).json({message: "Yet to be implemented"});
 });
 
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
     //Write your code here
+    const based_isbn = req.params.isbn;
+    let book = books[based_isbn]
+    console.log(book);
+    if (book) { //Check is friend exists
+        let new_review = req.body.review;
+
+        for(var key in books) {
+            if(books.hasOwnProperty(key)) {
+                var value = books[key];
+                if  (key == based_isbn) {
+                    value["review"] = new_review;
+                    console.log("Updated value: " + value);
+                }
+
+            }
+        }
+    }
+
+    res.send(`The review for the book with isbn ${based_isbn} has been added/updated. `)
+
+
 });
 
 module.exports.authenticated = regd_users;
