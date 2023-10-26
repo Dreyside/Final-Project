@@ -58,11 +58,12 @@ const username = req.body.username;
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
     //Write your code here
-    const based_isbn = req.params.isbn;
+    console.log("Hello this is the PUT REQUEST function")
+    const based_isbn = req.query.isbn;
     let book = books[based_isbn]
     console.log(book);
-    if (book) { //Check is friend exists
-        let new_review = req.body.review;
+    if (book) { //Check if the book exists
+        let new_review = req.params.review;
 
         for(var key in books) {
             if(books.hasOwnProperty(key)) {
@@ -74,9 +75,11 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
 
             }
         }
+
+        res.send(`The review for the book with isbn ${based_isbn} has been added/updated. `)
     }
 
-    res.send(`The review for the book with isbn ${based_isbn} has been added/updated. `)
+    
 
 
 });
