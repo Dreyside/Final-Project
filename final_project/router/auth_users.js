@@ -86,12 +86,14 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
 regd_users.delete("/auth/review/:isbn", (req, res) => {
 
     console.log("Hello this is the DELETE REQUEST function")
+    uName = req.body.username;
+    console.log("Username: " + uName);
     const based_isbn = req.params.isbn;
     console.log(based_isbn);
     let filtered_book = books[based_isbn]
     console.log(filtered_book);
     if (filtered_book) { //Check if the book exists
-        let new_review = "";
+        let new_review = {};
         console.log("New Review: "+new_review)
         for(var key in books) {
             if(books.hasOwnProperty(key)) {
@@ -105,7 +107,7 @@ regd_users.delete("/auth/review/:isbn", (req, res) => {
             }
         }
 
-        res.send(`The review for the book with isbn ${based_isbn} has been added/updated. `)
+        res.send(`The review for the book by ${uName} with isbn ${based_isbn} has been deleted. `)
     }
 });
 
