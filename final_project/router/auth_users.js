@@ -84,8 +84,30 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
 });
 
 regd_users.delete("/auth/review/:isbn", (req, res) => {
-    
-})
+
+    console.log("Hello this is the DELETE REQUEST function")
+    const based_isbn = req.params.isbn;
+    console.log(based_isbn);
+    let filtered_book = books[based_isbn]
+    console.log(filtered_book);
+    if (filtered_book) { //Check if the book exists
+        let new_review = "";
+        console.log("New Review: "+new_review)
+        for(var key in books) {
+            if(books.hasOwnProperty(key)) {
+                var value = books[key];
+                console.log("Value: "+value)
+                if  (key == based_isbn) {
+                    value["reviews"] = new_review;
+                    console.log("Updated value reviews: " + value["reviews"]);
+                }
+
+            }
+        }
+
+        res.send(`The review for the book with isbn ${based_isbn} has been added/updated. `)
+    }
+});
 
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
