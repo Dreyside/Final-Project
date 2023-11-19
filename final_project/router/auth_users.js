@@ -46,13 +46,12 @@ const username = req.body.username;
     req.session.authorization = {
       accessToken,username
   }
-  console.log("Access Token: " + accessToken + " Username: " + username);
-  console.log("req.session.authorization: " + req.session.authorization);
+   
   return res.status(200).send("User successfully logged in");
   } else {
     return res.status(208).json({message: "Invalid Login. Check username and password"});
   }
-    
+   
 });
 
 // Add a book review
@@ -98,7 +97,7 @@ regd_users.delete("/auth/review/:isbn", (req, res) => {
         for(var key in books) {
             if(books.hasOwnProperty(key)) {
                 var value = books[key];
-                console.log("Value: "+value)
+                console.log("Value: "+ value)
                 if  (key == based_isbn) {
                     value["reviews"] = new_review;
                     console.log("Updated value reviews: " + value["reviews"]);
@@ -110,6 +109,16 @@ regd_users.delete("/auth/review/:isbn", (req, res) => {
         res.send(`The review for the book by ${uName} with isbn ${based_isbn} has been deleted. `)
     }
 });
+
+
+// Delete a book reivew done only by specific authorized user
+regd_users.delete("/auth/review/:isbn", (req, res)=>{
+    const isbn = req.params.isbn;
+    const user = req.session.authorization["username"];
+    delete books[isbn]["reviews"][user];
+    res.send("Delete success!")
+});
+
 
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
